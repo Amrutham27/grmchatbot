@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Gradient M Chatbot</title>
+    <!-- Fav Icon -->
+    <link rel="icon" href="assets/images/favicon.png" type="image/x-icon">
+    <!-- Fav Icon -->
+    <!-- Googel Fonts -->
+    <link rel='stylesheet'
+        href='https://fonts.googleapis.com/css?family=DM+Sans%3A400%2C400i%2C500%2C500i%2C700%2C700i&amp;subset=latin%2Clatin-ext'
+        type='text/css' media='all' />
+    <!-- Googel Fonts -->
+    <!-- Plugins -->
+    <link rel='stylesheet' href='assets/css/plugins/bootstrap.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/plugins/animate.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/plugins/slick.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/plugins/select.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/plugins/owl.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/plugins/jquery.fancybox.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/plugins/rangeslider.css' type='text/css' media='all' />
+    <!-- Plugins -->
+    <!-- Vankine Styles -->
+    <link rel='stylesheet' href='assets/css/global-settings.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/theme.css' type='text/css' media='all' />
+    <!-- Vankine Styles -->
+    <!-- Icon Styles -->
+    <link rel='stylesheet' href='assets/css/plugins/uicons-regular-rounded.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/plugins/uicons-regular-straight.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/plugins/font-awesome.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' href='assets/css/plugins/flaticon_vankine.css' type='text/css' media='all' />
+    <!-- Icon Styles -->
+    
+    <!-- Layout Fixes -->
+    <link rel='stylesheet' href='assets/css/layout-fixes.css' type='text/css' media='all' />
+    
+    <!-- Chatbot Styles -->
+    <style>
+        body {
+            background: #f3a233;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        /* Header and Navigation Z-Index Management */
+        .header_area { z-index: 9999 !important; position: relative; }
+        .sticky_header_area { z-index: 9999 !important; position: fixed; }
+        .navbar_nav .sub_menu { z-index: 10000 !important; }
+        
+        /* Chatbot Positioning and Z-Index - Highest Priority */
+        .chatbot-icon { 
+            position: fixed !important; 
+            bottom: 20px !important; 
+            right: 20px !important; 
+            width: 60px; 
+            height: 60px; 
+            background: #f3a233; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            box-shadow: 0 4px 20px rgba(243, 162, 51, 0.4); 
+            z-index: 2147483647 !important; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.3s ease; 
+        }
+        .chatbot-icon:hover { transform: scale(1.1); box-shadow: 0 6px 25px rgba(243, 162, 51, 0.6); }
+        .chatbot-icon:active { transform: scale(1.05); }
+        .chatbot-icon i { color: white; font-size: 24px; }
+        
+        .chatbot-container { 
+            position: relative !important; 
+            width: 400px; 
+            min-width: 320px;
+            max-width: calc(100vw - 40px);
+            height: 500px;
+            max-height: calc(100vh - 40px); 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 15px 35px rgba(243, 162, 51, 0.3); 
+            z-index: 2147483646 !important; 
+            display: flex !important; 
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            flex-direction: column;
+        }
+        
+        .chat-header { 
+            background: #f3a233; 
+            color: white; 
+            padding: 15px; 
+            text-align: center; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            position: relative; 
+        }
+        .chat-header h3 { font-size: 1.1em; font-weight: 600; margin: 0; }
+        .close-chat { position: absolute; top: 10px; right: 15px; background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
+
+        .clear-chat { position: absolute; top: 35px; right: 15px; background: none; border: none; color: white; font-size: 12px; cursor: pointer; opacity: 0.8; }
+        .clear-chat:hover { opacity: 1; }
+        
+        .typing-indicator .bot-message { 
+            animation: pulse 1.5s infinite; 
+            font-style: italic; 
+            opacity: 0.7; 
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        
+        .form-group input[required]:invalid {
+            border-color: #f3a233;
+            box-shadow: 0 0 0 2px rgba(243, 162, 51, 0.2);
+        }
+        
+        .error-message {
+            color: #f3a233;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .chat-messages { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 15px; 
+            background: #fafafa; 
+            scroll-behavior: smooth;
+        }
+        .message { margin-bottom: 15px; animation: fadeIn 0.3s ease-in; }
+        .message:last-child { margin-bottom: 0; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .bot-message { 
+            background: linear-gradient(135deg, #fff5f0, #ffe8d6); 
+            padding: 10px 12px; 
+            border-radius: 12px 12px 12px 4px; 
+            margin-right: 15px; 
+            border-left: 3px solid #f3a233; 
+            box-shadow: 0 2px 8px rgba(243, 162, 51, 0.1); 
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        .user-message { 
+            background: #f3a233; 
+            color: white; 
+            padding: 10px 12px; 
+            border-radius: 12px 12px 4px 12px; 
+            margin-left: 15px; 
+            text-align: right; 
+            box-shadow: 0 2px 8px rgba(243, 162, 51, 0.3); 
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        
+        .options { margin-top: 15px; margin-bottom: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .option-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 10px; 
+            margin: 0; 
+            background: transparent; 
+            color: #f3a233; 
+            border: 2px solid #f3a233; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: 500; 
+            font-size: 13px; 
+            transition: all 0.3s ease; 
+            box-shadow: none; 
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .option-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(243, 162, 51, 0.4); 
+            background: #f3a233; 
+            color: white; 
+        }
+        .option-btn:active {
+            transform: translateY(0);
+        }
+        .option-btn:only-child,
+        .option-btn:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group { margin: 15px 0; position: relative; }
+        .form-group input, .form-group textarea { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #ffe8d6; 
+            border-radius: 10px; 
+            font-size: 14px; 
+            transition: border-color 0.3s ease; 
+            box-sizing: border-box;
+        }
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: #999;
+        }
+        .form-group input:focus, .form-group textarea:focus { 
+            outline: none; 
+            border-color: #f3a233; 
+            box-shadow: 0 0 0 3px rgba(243, 162, 51, 0.1); 
+        }
+        .form-group input:valid {
+            border-color: #28a745;
+        }
+        
+        .submit-btn { 
+            background: #f3a233; 
+            color: white; 
+            padding: 12px 24px; 
+            border: none; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 15px rgba(243, 162, 51, 0.3); 
+            width: 100%;
+            margin-top: 10px;
+        }
+        .submit-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(243, 162, 51, 0.4); 
+        }
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .input-area { 
+            padding: 10px; 
+            border-top: 1px solid #ffe8d6; 
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            flex-shrink: 0;
+        }
+        .input-area input { 
+            flex: 1; 
+            padding: 10px 12px; 
+            border: 2px solid #ffe8d6; 
+            border-radius: 12px; 
+            font-size: 14px;
+            transition: border-color 0.3s ease; 
+        }
+        .input-area input:focus { 
+            outline: none; 
+            border-color: #f3a233; 
+            box-shadow: 0 0 0 3px rgba(243, 162, 51, 0.1);
+        }
+        .input-area input::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .send-btn { 
+            width: 40px; 
+            height: 40px; 
+            background: #f3a233; 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease; 
+        }
+        .send-btn:hover { 
+            transform: translateY(-1px); 
+            box-shadow: 0 4px 15px rgba(243, 162, 51, 0.3); 
+        }
+        .send-btn:active {
+            transform: translateY(0);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) { 
+            .chatbot-container { 
+                width: calc(100vw - 30px) !important;
+                max-width: 400px !important;
+                max-height: calc(100vh - 60px) !important;
+            }
+            .chat-messages {
+                height: calc(100vh - 280px) !important;
+                min-height: 200px !important;
+                max-height: 350px !important;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .chatbot-container {
+                width: calc(100vw - 20px) !important;
+                max-height: calc(100vh - 40px) !important;
+            }
+            .chat-messages {
+                height: calc(100vh - 260px) !important;
+                min-height: 180px !important;
+                max-height: 300px !important;
+            }
+            .chat-header {
+                padding: 12px !important;
+            }
+            .chat-header h3 {
+                font-size: 1em !important;
+            }
+            .input-area {
+                padding: 8px !important;
+            }
+        }
+        
+        @media (max-width: 320px) {
+            .chatbot-container {
+                width: calc(100vw - 10px) !important;
+                max-height: calc(100vh - 20px) !important;
+            }
+            .chat-messages {
+                height: calc(100vh - 240px) !important;
+                min-height: 150px !important;
+                max-height: 250px !important;
+                padding: 10px !important;
+            }
+        }
+    </style>
+</head>
+<body class="theme-vankine scrollbarcolor s_color_two">
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chat-header">
+            <h3>Gradient M Chatbot</h3>
+            <button class="clear-chat" onclick="clearChat()" title="Clear">Clear</button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="input-area" id="constantInputArea">
+            <input type="text" id="constantUserInput" placeholder="Type your message...">
+            <button class="send-btn" onclick="sendConstantMessage()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type='text/javascript' src='assets/js/plugins/jquery.min.js'></script>
+    <script type='text/javascript' src='assets/js/plugins/bootstrap.bundle.min.js'></script>
+    
+    <!-- Chatbot Script -->
+    <script>
+        let currentStep = 'greeting';
+        let userRequirement = '';
+        let formData = {};
+        let chatbotInitialized = false;
+        let scrollTriggered = false;
+        let timeTriggered = false;
+
+        function showTypingIndicator() {
+            const messagesDiv = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message typing-indicator';
+            typingDiv.id = 'typing';
+            typingDiv.innerHTML = '<div class="bot-message">...</div>';
+            messagesDiv.appendChild(typingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typing = document.getElementById('typing');
+            if (typing) typing.remove();
+        }
+
+        function addMessage(message, isBot = true, hasOptions = false, options = [], delay = 300) {
+            if (isBot && delay > 0) {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    addMessageImmediate(message, isBot, hasOptions, options);
+                }, delay);
+            } else {
+                addMessageImmediate(message, isBot, hasOptions, options);
+            }
+        }
+
+        function addMessageImmediate(message, isBot = true, hasOptions = false, options = []) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            const messageContent = document.createElement('div');
+            messageContent.className = isBot ? 'bot-message' : 'user-message';
+            messageContent.innerHTML = message;
+            
+            messageDiv.appendChild(messageContent);
+            
+            if (hasOptions && options.length > 0) {
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                
+                options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = option.text;
+                    btn.onclick = option.action;
+                    optionsDiv.appendChild(btn);
+                });
+                
+                messageDiv.appendChild(optionsDiv);
+            }
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function validatePhone(phone) {
+            const phoneRegex = /^[\d\s\-\+\(\)]{10,}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function processUserInput(input) {
+            const lowerInput = input.toLowerCase();
+            
+            if (lowerInput.includes('human') || lowerInput.includes('sales') || lowerInput.includes('speak')) {
+                showSalesForm();
+            } else if (lowerInput.includes('career') || lowerInput.includes('job') || lowerInput.includes('hiring')) {
+                showCareerOptions();
+            } else if (lowerInput.includes('help') || lowerInput.includes('support')) {
+                showGeneralInquiryForm();
+            } else {
+                addMessage('I understand you have a question. Let me connect you with the right team.', true, true, [
+                    { text: 'Speak to Sales', action: () => showSalesForm() },
+                    { text: 'General Inquiry', action: () => showGeneralInquiryForm() },
+                    { text: 'Start Over', action: () => { clearChat(); showGreeting(); } }
+                ]);
+            }
+        }
+
+        function showGreeting() {
+            addMessage('Hello! We help businesses Solve, Scale, & Succeed. Which area can we help you with?', true, true, [
+                { text: 'IT Consulting', action: () => selectService('IT Consulting') },
+                { text: 'Cloud & Infra', action: () => selectService('Cloud & Infra') },
+                { text: 'Digital Workplace', action: () => selectService('Digital Workplace') },
+                { text: 'Data & AI Services', action: () => selectService('Data & AI Services') },
+                { text: 'Talent Acquisition', action: () => selectService('Talent Acquisition') },
+                { text: 'Careers', action: () => selectService('Careers') },
+                { text: 'Contact Us ', action: () => showContactCareers('Contact Us') }
+            ]);
+        }
+
+        function selectService(service) {
+            addMessage(service, false);
+            
+            if (service === 'IT Consulting') {
+                showITConsultingOptions();
+            } else if (service === 'Infrastructure Modernization' || service === 'Cloud & Infra') {
+                showInfrastructureOptions();
+            } else if (service === 'Digital Workplace') {
+                showDigitalWorkplaceOptions();
+            } else if (service === 'Data & AI Services') {
+                showDataAIOptions();
+            } else if (service === 'Talent Acquisition') {
+                showTalentAcquisitionOptions();
+            } else if (service === 'Careers') {
+                showCareerOptions();
+            } else {
+                const serviceInfo = {};
+                
+                addMessage(serviceInfo[service] || 'Learn more about our comprehensive solutions.');
+                addMessage('Would you like to:', true, true, [
+                    { text: 'Get a Quote', action: () => showContactForm() },
+                    { text: 'Schedule a Consultation', action: () => showConsultationForm() },
+                    { text: 'Learn More', action: () => showMoreInfo(service) }
+                ]);
+            }
+        }
+
+        function showTalentAcquisitionOptions() {
+            addMessage('We help you hire. Are you looking to fill a Single Niche Role or Build Out a New Team?', true, true, [
+                { text: 'Single Niche Role', action: () => selectTalentType('Single Niche Role') },
+                { text: 'Build Out a New Team', action: () => selectTalentType('Build Out a New Team') }
+            ]);
+        }
+
+        function selectTalentType(type) {
+            addMessage(type, false);
+            formData.talentType = type;
+            addMessage('Understood. To assess your needs, please provide your Name and Phone Number.', true);
+            showTalentForm();
+        }
+
+        function showTalentForm() {
+            const formHtml = `
+                <div class="form-group">
+                    <input type="text" id="talentName" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="talentPhone" placeholder="Phone Number" required>
+                </div>
+                <button onclick="submitTalentForm()" class="submit-btn">Submit</button>
+            `;
+            addMessage(formHtml, true);
+        }
+
+        function submitTalentForm() {
+            const name = document.getElementById('talentName').value.trim();
+            const phone = document.getElementById('talentPhone').value.trim();
+            
+            if (!name || !phone) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            if (!validatePhone(phone)) {
+                alert('Please enter a valid phone number (at least 10 digits).');
+                return;
+            }
+            
+            formData.talentName = name;
+            formData.talentPhone = phone;
+            
+            addMessage(`Name: ${name}\nPhone Number: ${phone}`, false);
+            addMessage(`Thanks, ${name}! A Talent Partner will call you within the hour. View Our Available Talent Pools while you wait.`, true, true, [
+                { text: 'View Talent Pools', action: () => window.open('/talent/talent-pools', '_blank') }
+            ]);
+        }
+
+        function showDataAIOptions() {
+            addMessage('We can help you turn data into decisions. Which area interests you most?', true, true, [
+                { text: 'Data Strategy & Governance', action: () => selectDataAIType('Data Strategy & Governance') },
+                { text: 'Predictive Analytics / ML', action: () => selectDataAIType('Predictive Analytics / ML') },
+                { text: 'Generative AI / Chatbots', action: () => selectDataAIType('Generative AI / Chatbots') }
+            ]);
+        }
+
+        function selectDataAIType(type) {
+            addMessage(type, false);
+            formData.dataAIType = type;
+            
+            if (type === 'Generative AI / Chatbots') {
+                addMessage('Perfect. Generative AI requires a strategic discussion. Would you like to Connect with a Data Scientist or See Case Studies?', true, true, [
+                    { text: 'Connect with a Data Scientist', action: () => showDataScientistForm() },
+                    { text: 'See Case Studies', action: () => showDataAICaseStudies() }
+                ]);
+            } else {
+                addMessage(`${type} is a specialized area. Would you like to Connect with a Data Scientist or See Case Studies?`, true, true, [
+                    { text: 'Connect with a Data Scientist', action: () => showDataScientistForm() },
+                    { text: 'See Case Studies', action: () => showDataAICaseStudies() }
+                ]);
+            }
+        }
+
+        function showDataScientistForm() {
+            addMessage('Connect with a Data Scientist', false);
+            addMessage('Please confirm your Name and Work Email for the introduction.', true);
+            const formHtml = `
+                <div class="form-group">
+                    <input type="text" id="dataScientistName" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="dataScientistEmail" placeholder="Work Email" required>
+                </div>
+                <button onclick="submitDataScientistForm()" class="submit-btn">Submit</button>
+            `;
+            addMessage(formHtml, true);
+        }
+
+        function submitDataScientistForm() {
+            const name = document.getElementById('dataScientistName').value.trim();
+            const email = document.getElementById('dataScientistEmail').value.trim();
+            
+            if (!name || !email) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            formData.dataScientistName = name;
+            formData.dataScientistEmail = email;
+            
+            addMessage(`Name: ${name}\nWork Email: ${email}`, false);
+            addMessage('Introduction sent! Thank you.', true);
+        }
+
+        function showDataAICaseStudies() {
+            addMessage('See Case Studies', false);
+            const serviceType = formData.dataAIType;
+            
+            if (serviceType === 'Generative AI / Chatbots') {
+                addMessage('Here are some relevant examples:', true, true, [
+                    { text: 'Generative AI Case Studies', action: () => window.open('/case-studies/generative-ai', '_blank') },
+                    { text: 'Chatbot Case Studies', action: () => window.open('/case-studies/chatbots', '_blank') }
+                ]);
+            } else {
+                addMessage('Here are some relevant case studies for your area of interest:', true, true, [
+                    { text: 'View Case Studies', action: () => window.open('/case-studies/data-ai', '_blank') }
+                ]);
+            }
+        }
+
+        function showInfrastructureOptions() {
+            addMessage('Got it. Which area is your primary focus for infrastructure improvement?', true, true, [
+                { text: 'Cloud Migration', action: () => selectInfrastructureType('Cloud Migration') },
+                { text: 'Managed IT Services', action: () => selectInfrastructureType('Managed IT Services') },
+                { text: 'Security & Performance', action: () => selectInfrastructureType('Security & Performance') }
+            ]);
+        }
+
+        function selectInfrastructureType(type) {
+            addMessage(type, false);
+            formData.infrastructureType = type;
+            
+            const caseStudyMap = {
+                'Cloud Migration': 'Cloud Platform',
+                'Managed IT Services': 'Managed Services',
+                'Security & Performance': 'Security Enhancement'
+            };
+            
+            const caseStudyType = caseStudyMap[type] || 'Infrastructure';
+            addMessage(`We can share a case study on ${caseStudyType} migration. Can I send the relevant case study to your email?`, true);
+            showCaseStudyForm();
+        }
+
+        function showCaseStudyForm() {
+            const formHtml = `
+                <div class="form-group">
+                    <input type="email" id="caseStudyEmail" placeholder="Email" required>
+                </div>
+                <button onclick="submitCaseStudyForm()" class="submit-btn">Send Case Study</button>
+            `;
+            addMessage(formHtml, true);
+        }
+
+        function submitCaseStudyForm() {
+            const email = document.getElementById('caseStudyEmail').value;
+            
+            if (!email) {
+                alert('Please enter your email.');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            formData.caseStudyEmail = email;
+            
+            addMessage(`Email: ${email}`, false);
+            addMessage('Email sent! Would you like to Schedule a Free Infrastructure Assessment?', true, true, [
+                { text: 'Schedule Assessment', action: () => window.open('https://calendly.com/gradientm-assessment', '_blank') }
+            ]);
+        }
+
+        function showITConsultingOptions() {
+            addMessage('We focus on strategy and growth. Are you looking for IT Roadmap / Strategy or Cost Optimization / Assessment?', true, true, [
+                { text: 'IT Roadmap / Strategy', action: () => selectITConsultingType('IT Roadmap / Strategy') },
+                { text: 'Cost Optimization / Assessment', action: () => selectITConsultingType('Cost Optimization / Assessment') }
+            ]);
+        }
+
+        function selectITConsultingType(type) {
+            addMessage(type, false);
+            formData.consultingType = type;
+            addMessage('Great. For a personalized response, please share your Role (e.g., \'CTO\', \'Head of IT\') and Work Email.', true);
+            showITConsultingForm();
+        }
+
+        function showITConsultingForm() {
+            const formHtml = `
+                <div class="form-group">
+                    <input type="text" id="role" placeholder="Role (e.g., CTO, Head of IT) *" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="workEmail" placeholder="Work Email *" required>
+                </div>
+                <button onclick="submitITConsultingForm()" class="submit-btn">Submit</button>
+            `;
+            addMessage(formHtml, true);
+        }
+
+        function submitITConsultingForm() {
+            const role = document.getElementById('role').value.trim();
+            const workEmail = document.getElementById('workEmail').value.trim();
+            
+            if (!role || !workEmail) {
+                addMessage('Please fill in all required fields.', true, false, [], 0);
+                return;
+            }
+            
+            if (!validateEmail(workEmail)) {
+                addMessage('Please enter a valid email address.', true, false, [], 0);
+                return;
+            }
+            
+            formData.role = role;
+            formData.workEmail = workEmail;
+            
+            addMessage(`Role: ${role}\nEmail: ${workEmail}`, false, false, [], 0);
+            addMessage('Thanks! A Strategy Consultant will contact you soon.', true);
+            addMessage('Explore Our Approach while you wait.', true, true, [
+                { text: 'Explore Our Approach', action: () => window.open('/services/it-consulting', '_blank') }
+            ]);
+        }
+
+        function showDigitalWorkplaceOptions() {
+            addMessage('We streamline user productivity. Are you focused on Collaboration Tools (e.g., M365) or Managed Device Services?', true, true, [
+                { text: 'Collaboration Tools (e.g., M365)', action: () => selectDigitalWorkplaceType('Collaboration Tools (e.g., M365)') },
+                { text: 'Managed Device Services', action: () => selectDigitalWorkplaceType('Managed Device Services') }
+            ]);
+        }
+
+        function selectDigitalWorkplaceType(type) {
+            addMessage(type, false);
+            formData.digitalWorkplaceType = type;
+            addMessage('Excellent. To connect you to the right specialist, please provide your Work Email.', true);
+            showDigitalWorkplaceForm();
+        }
+
+        function showDigitalWorkplaceForm() {
+            const formHtml = `
+                <div class="form-group">
+                    <input type="email" id="digitalWorkplaceEmail" placeholder="Work Email" required>
+                </div>
+                <button onclick="submitDigitalWorkplaceForm()" class="submit-btn">Connect Me</button>
+            `;
+            addMessage(formHtml, true);
+        }
+
+        function submitDigitalWorkplaceForm() {
+            const email = document.getElementById('digitalWorkplaceEmail').value.trim();
+            
+            if (!email) {
+                alert('Please enter your work email.');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            formData.digitalWorkplaceEmail = email;
+            
+            addMessage(`Work Email: ${email}`, false);
+            addMessage('Thank you! You\'ll hear from our Digital Workplace team shortly. Download our E-Book on Hybrid Work while you wait.', true, true, [
+                { text: 'Download E-Book', action: () => window.open('/resources/hybrid-work-ebook.pdf', '_blank') }
+            ]);
+        }
+
+        function showContactCareers(type) {
+            if (type === 'Contact Us') {
+                addMessage('Contact Us', false);
+                addMessage('Sure, what\'s on your mind?', true, true, [
+                    { text: 'Speak to Sales', action: () => showSalesForm() },
+                    { text: 'General Inquiry', action: () => showGeneralInquiryForm() }
+                ]);
+            } else {
+                addMessage('Contact Us / Careers', false);
+                addMessage('Sure, what\'s on your mind?', true, true, [
+                    { text: 'Speak to Sales', action: () => showSalesForm() },
+                    { text: 'Career Opportunities', action: () => showCareerOptions() },
+                    { text: 'General Inquiry', action: () => showGeneralInquiryForm() }
+                ]);
+            }
+        }
+
+        function showSalesForm() {
+            addMessage('Speak to Sales', false);
+            addMessage('Great! To ensure we connect you to the right team, please provide your Name and Work Email.', true);
+            const formHtml = `
+                <div class="form-group">
+                    <input type="text" id="salesName" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="salesEmail" placeholder="Work Email" required>
+                </div>
+                <button onclick="submitSalesForm()" class="submit-btn">Submit</button>
+            `;
+            addMessage(formHtml, true);
+        }
+
+        function submitSalesForm() {
+            const name = document.getElementById('salesName').value.trim();
+            const email = document.getElementById('salesEmail').value.trim();
+            
+            if (!name || !email) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            formData.salesName = name;
+            formData.salesEmail = email;
+            
+            addMessage(`Name: ${name}\nWork Email: ${email}`, false);
+            addMessage(`Thanks, ${name}! Our sales team will be in touch shortly.`, true);
+            addMessage('Would you like to view our services or just browse?', true, true, [
+                { text: 'View Our Services', action: () => window.open('/services', '_blank') },
+                { text: 'Just Browsing', action: () => showBrowsingResponse() }
+            ]);
+        }
+
+        function showCareerOptions() {
+            addMessage('Career Opportunities', false);
+            addMessage('Fantastic! You can explore our open roles and apply directly on our Careers Page. Would you like to Submit Your Resume for future consideration?', true, true, [
+                { text: 'Submit Resume', action: () => showResumeSubmissionForm() },
+                { text: 'Just Browsing', action: () => showBrowsingResponse() },
+                { text: 'View Careers Page', action: () => window.open('/careers', '_blank') }
+            ]);
+        }
+
+        function showResumeSubmissionForm() {
+            addMessage('Submit Resume', false);
+            addMessage('Please provide your Name and Email, and we\'ll send you a link to upload your resume.', true);
+            const formHtml = `
+                <div class="form-group">
+                    <input type="text" id="resumeName" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="resumeEmail" placeholder="Email" required>
+                </div>
+                <button onclick="submitResumeForm()" class="submit-btn">Send Link</button>
+            `;
+            addMessage(formHtml, true);
+        }
+
+        function submitResumeForm() {
+            const name = document.getElementById('resumeName').value.trim();
+            const email = document.getElementById('resumeEmail').value.trim();
+            
+            if (!name || !email) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            formData.resumeName = name;
+            formData.resumeEmail = email;
+            
+            addMessage(`Name: ${name}\nEmail: ${email}`, false);
+            addMessage('Link sent! We appreciate your interest.', true);
+        }
+
+        function showBrowsingResponse() {
+            addMessage('Just Browsing', false);
+            addMessage('No problem! Feel free to explore our Careers Page anytime.', true, true, [
+                { text: 'View Careers Page', action: () => window.open('/careers', '_blank') }
+            ]);
+        }
+
+        function showGeneralInquiryForm() {
+            addMessage('General Inquiry', false);
+            addMessage('Please briefly describe your query. To ensure a response, share your Name and Work Email.', true);
+            const formHtml = `
+                <div class="form-group">
+                    <textarea id="inquiryQuery" placeholder="Query Description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="inquiryName" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="inquiryEmail" placeholder="Work Email" required>
+                </div>
+                <button onclick="submitInquiryForm()" class="submit-btn">Submit</button>
+            `;
+            addMessage(formHtml, true);
+        }
+
+        function submitInquiryForm() {
+            const query = document.getElementById('inquiryQuery').value.trim();
+            const name = document.getElementById('inquiryName').value.trim();
+            const email = document.getElementById('inquiryEmail').value.trim();
+            
+            if (!query || !name || !email) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            
+            if (!validateEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            formData.inquiryQuery = query;
+            formData.inquiryName = name;
+            formData.inquiryEmail = email;
+            
+            addMessage(`Query: ${query}\nName: ${name}\nWork Email: ${email}`, false);
+            addMessage('Thank you! Our team will get back to you shortly.', true);
+        }
+
+        function showContactForm() {
+            const formHtml = `
+                <div class="form-group">
+                    <input type="text" id="name" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email ID" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="company" placeholder="Company Name" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" placeholder="Requirements / Message" rows="3"></textarea>
+                </div>
+                <button class="submit-btn" onclick="submitForm()">Submit</button>
+            `;
+            
+            addMessage('Please share your contact details:');
+            const messagesDiv = document.getElementById('chatMessages');
+            const formDiv = document.createElement('div');
+            formDiv.className = 'message';
+            formDiv.innerHTML = `<div class="bot-message">${formHtml}</div>`;
+            messagesDiv.appendChild(formDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        async function submitForm() {
+            const nameEl = document.getElementById('name');
+            const phoneEl = document.getElementById('phone');
+            const emailEl = document.getElementById('email');
+            const companyEl = document.getElementById('company');
+            const messageEl = document.getElementById('message');
+            
+            if (!nameEl || !phoneEl || !emailEl || !companyEl) {
+                alert('Form elements not found. Please refresh the page.');
+                return;
+            }
+            
+            const name = nameEl.value.trim();
+            const phone = phoneEl.value.trim();
+            const email = emailEl.value.trim();
+            const company = companyEl.value.trim();
+            const message = messageEl ? messageEl.value.trim() : '';
+
+            if (!name || !phone || !email || !company) {
+                alert('Please fill in all required fields (Name, Phone, Email, Company).');
+                return;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+
+            const formData = { 
+                name, 
+                phone, 
+                email, 
+                company, 
+                message: message || 'No additional message provided',
+                requirement: userRequirement || 'General inquiry',
+                timestamp: new Date().toISOString(),
+                type: 'contact_form'
+            };
+            
+            // Save to localStorage (client-side storage)
+            const leads = JSON.parse(localStorage.getItem('gradient_m_leads') || '[]');
+            leads.push(formData);
+            localStorage.setItem('gradient_m_leads', JSON.stringify(leads));
+            
+            console.log('Form data saved locally:', formData);
+            addMessage('✅ Thank you! Your information has been recorded.', true);
+            addMessage('Our team will contact you within 24 hours. 📞');
+            
+            setTimeout(() => {
+                document.getElementById('chatMessages').innerHTML = '';
+                showGreeting();
+            }, 4000);
+        }
+
+        // Azure OpenAI Configuration
+        const AZURE_CONFIG = {
+            endpoint: 'your_azure_openai_endpoint',
+            deploymentName: 'your_deployment_name',
+            apiKey: 'your_azure_openai_api_key',
+            searchEndpoint: 'your_search_endpoint',
+            searchKey: 'your_search_key',
+            searchIndex: 'your_index_name'
+        };
+
+        // Process AI response to format properly
+        function processAIResponse(text) {
+            let formatted = text
+                .replace(/&amp;/g, '&')            // Fix HTML entities
+                .replace(/&quot;/g, '"')          // Fix quotes
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // Convert **bold** to HTML
+                .replace(/##\s*(.*?)$/gm, '<h3 style="margin: 5px 0;">$1</h3>')          // Convert ## to h3
+                .replace(/#\s*(.*?)$/gm, '<h4 style="margin: 3px 0;">$1</h4>')           // Convert # to h4
+                .replace(/---/g, '<hr style="margin: 8px 0;">')                          // Convert --- to horizontal line
+                .replace(/^\s*(\d+\.\s*.+)$/gm, '<div style="margin: 3px 0; line-height: 1.3;"><strong>$1</strong></div>') // Format numbered lists
+                .replace(/^\s*•\s*(.+)$/gm, '<div style="margin: 2px 0; padding-left: 15px; line-height: 1.3;">• $1</div>') // Format bullet points
+                .replace(/\n\n\n+/g, '<br>')                      // Multiple line breaks to single
+                .replace(/\n\n/g, '<br>')                         // Double line breaks to single
+                .replace(/\n/g, '<br>')                           // Single line breaks
+                .replace(/(<br>\s*){3,}/g, '<br><br>')            // Limit consecutive breaks
+                .trim();
+            
+            return formatted;
+        }
+
+        // Get AI response with timeout and better error handling
+        async function getAIResponse(message) {
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+                
+                const response = await fetch(`${AZURE_CONFIG.endpoint}/openai/deployments/${AZURE_CONFIG.deploymentName}/chat/completions?api-version=2024-02-15-preview`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'api-key': AZURE_CONFIG.apiKey
+                    },
+                    body: JSON.stringify({
+                        messages: [{
+                            role: 'system',
+                            content: 'You are a helpful assistant for Gradient M IT Consulting & Services. Founded in July 2018 in Bangalore by CEO Ravindra Talwai with 25+ years experience at Cognizant and Wipro. We offer IT Consulting, Cloud Services, Digital Workplace, Data & AI, and Talent Acquisition services.'
+                        }, {
+                            role: 'user',
+                            content: message
+                        }],
+                        max_tokens: 1500,
+                        temperature: 0.7
+                    }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    return processAIResponse(data.choices[0].message.content);
+                } else {
+                    console.log('API Error:', response.status);
+                    return getSimpleResponse(message);
+                }
+            } catch (error) {
+                console.log('AI service error:', error.message);
+                return getSimpleResponse(message);
+            }
+        }
+
+        // Simple client-side responses for common queries (fallback)
+        function getSimpleResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage === 'hi' || lowerMessage === 'hello') {
+                return 'Hello! Welcome to Gradient M. How can I help you today?';
+            }
+            
+            if (lowerMessage.includes('service')) {
+                return 'We offer IT Consulting, Cloud Services, Digital Workplace, Data & AI, and Talent Acquisition services. Which one interests you?';
+            }
+            
+            if (lowerMessage.includes('contact')) {
+                return 'You can reach us at services@gradientm.com or use our contact form. Would you like me to help you get in touch?';
+            }
+            
+            if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                return 'Our pricing varies based on your specific needs. Would you like to schedule a consultation to discuss your requirements?';
+            }
+            
+            return 'Thank you for your message. Our team will get back to you soon. Is there anything specific I can help you with right now?';
+        }
+
+        async function sendConstantMessage() {
+            const input = document.getElementById('constantUserInput');
+            if (!input) {
+                console.log('Input not found');
+                return;
+            }
+            
+            const message = input.value.trim();
+            if (!message) {
+                console.log('No message');
+                return;
+            }
+            
+            console.log('Message received:', message);
+            addMessage(message, false, false, [], 0);
+            input.value = '';
+            
+            const lowerInput = message.toLowerCase();
+            
+            // Handle simple greetings with AI only
+            if (lowerInput === 'hi' || lowerInput === 'hello' || lowerInput === 'hey') {
+                const response = await getAIResponse(message);
+                addMessage(response, true);
+                return;
+            }
+            
+            // For other messages, check if they need structured responses
+            if (lowerInput.includes('human') || lowerInput.includes('sales') || lowerInput.includes('speak') ||
+                lowerInput.includes('career') || lowerInput.includes('job') || lowerInput.includes('hiring')) {
+                processUserInput(message);
+            } else {
+                // Use AI for general questions
+                const response = await getAIResponse(message);
+                addMessage(response, true);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const constantInput = document.getElementById('constantUserInput');
+            
+            if (constantInput) {
+                constantInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendConstantMessage();
+                    }
+                });
+            }
+        });
+
+        function showMoreInfo(service) {
+            addMessage('Learn More', false);
+            addMessage('Visit our website for detailed information: <a href="https://www.gradientm.com" target="_blank">www.gradientm.com</a><br><br>Or contact our experts directly!');
+            showContactForm();
+        }
+        
+        function showConsultationForm() {
+            addMessage('Schedule a Consultation', false);
+            addMessage('Our experts will provide a free consultation tailored to your needs.');
+            showContactForm();
+        }
+
+        function clearChat() {
+            document.getElementById('chatMessages').innerHTML = '';
+            formData = {};
+            currentStep = 'greeting';
+            setTimeout(() => showGreeting(), 300);
+        }
+
+        function goBack() {
+            clearChat();
+        }
+
+        // Start the chatbot
+        showGreeting();
+    </script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+/* Template custom icon Font*/
+@font-face {
+  font-family: icomoon;
+  src: url(../fonts/icomoon.eot);
+  src: url(../fonts/icomoon.eot) format("embedded-opentype"), url(../fonts/icomoon.ttf) format("truetype"), url(../fonts/icomoon.woff) format("woff"), url(../fonts/icomoon.svg) format("svg");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-alert:before {
+  content: "\e96b";
+}
+
+.icon-pdf:before {
+  content: "\e96a";
+}
+
+.icon-plus:before {
+  content: "\e969";
+}
+
+.icon-check:before {
+  content: "\e968";
+}
+
+.icon-business-and-finance:before {
+  content: "\e965";
+}
+
+.icon-layers:before {
+  content: "\e966";
+}
+
+.icon-room-service:before {
+  content: "\e967";
+}
+
+.icon-market-analysis:before {
+  content: "\e948";
+}
+
+.icon-marketing:before {
+  content: "\e949";
+}
+
+.icon-money:before {
+  content: "\e94a";
+}
+
+.icon-networking:before {
+  content: "\e94b";
+}
+
+.icon-open-book:before {
+  content: "\e94c";
+}
+
+.icon-partnership-handshake:before {
+  content: "\e94d";
+}
+
+.icon-profit:before {
+  content: "\e94e";
+}
+
+.icon-profit-growth:before {
+  content: "\e94f";
+}
+
+.icon-question-and-answer:before {
+  content: "\e950";
+}
+
+.icon-question-and-answer-1:before {
+  content: "\e951";
+}
+
+.icon-recession:before {
+  content: "\e952";
+}
+
+.icon-report:before {
+  content: "\e953";
+}
+
+.icon-reporting:before {
+  content: "\e954";
+}
+
+.icon-research:before {
+  content: "\e955";
+}
+
+.icon-research-1:before {
+  content: "\e956";
+}
+
+.icon-risk:before {
+  content: "\e957";
+}
+
+.icon-risk-management:before {
+  content: "\e958";
+}
+
+.icon-risk-management-1:before {
+  content: "\e959";
+}
+
+.icon-safety:before {
+  content: "\e95a";
+}
+
+.icon-science:before {
+  content: "\e95b";
+}
+
+.icon-solution:before {
+  content: "\e95c";
+}
+
+.icon-strategy:before {
+  content: "\e95d";
+}
+
+.icon-successful:before {
+  content: "\e95e";
+}
+
+.icon-swot-analysis:before {
+  content: "\e95f";
+}
+
+.icon-taxes:before {
+  content: "\e960";
+}
+
+.icon-team-management:before {
+  content: "\e961";
+}
+
+.icon-valuable:before {
+  content: "\e962";
+}
+
+.icon-video-call:before {
+  content: "\e963";
+}
+
+.icon-work-team:before {
+  content: "\e964";
+}
+
+.icon-facebook:before {
+  content: "\e927";
+}
+
+.icon-linkedin:before {
+  content: "\e928";
+}
+
+.icon-twitter:before {
+  content: "\e929";
+}
+
+.icon-close:before {
+  content: "\e947";
+}
+
+.icon-bars:before {
+  content: "\e901";
+  font-size: 75%;
+}
+
+.icon-arrow-right:before,
+.icon-arrow-left:before,
+.icon-arrow-down:before {
+  content: "\e900";
+}
+
+.icon-arrow-left:before {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+
+.icon-arrow-up-right:before,
+.icon-arrow-up-left:before {
+  content: "\e946";
+}
+
+.icon-arrow-up-left:before {
+  display: inline-block;
+  transform: rotate(-90deg);
+}
+
+.icon-arrow-down:before {
+  display: inline-block;
+  transform: rotate(90deg);
+}
+
+.icon-quote:before {
+  content: "\e908";
+}
+
+.icon-quote2:before {
+  content: "\e909";
+}
+
+.icon-quote3:before {
+  content: "\e90a";
+}
+
+.icon-quote4:before {
+  content: "\e90b";
+}
+
+.icon-advanced-training:before {
+  content: "\e90c";
+}
+
+.icon-advice:before {
+  content: "\e90d";
+}
+
+.icon-advice-1:before {
+  content: "\e90e";
+}
+
+.icon-agreement:before {
+  content: "\e90f";
+}
+
+.icon-agreement-1:before {
+  content: "\e910";
+}
+
+.icon-analysis:before {
+  content: "\e911";
+}
+
+.icon-analysis-1:before {
+  content: "\e912";
+}
+
+.icon-analytics:before {
+  content: "\e913";
+}
+
+.icon-backlog:before {
+  content: "\e914";
+}
+
+.icon-battery:before {
+  content: "\e915";
+}
+
+.icon-bioengineering:before {
+  content: "\e916";
+}
+
+.icon-business-meeting:before {
+  content: "\e917";
+}
+
+.icon-business-plan:before {
+  content: "\e918";
+}
+
+.icon-checklist:before {
+  content: "\e919";
+}
+
+.icon-consultancy:before {
+  content: "\e91a";
+}
+
+.icon-consultancy-1:before {
+  content: "\e91b";
+}
+
+.icon-consultant:before {
+  content: "\e91c";
+}
+
+.icon-consultant-1:before {
+  content: "\e91d";
+}
+
+.icon-consultant-2:before {
+  content: "\e91e";
+}
+
+.icon-customer-support:before {
+  content: "\e91f";
+}
+
+.icon-customer-support-1:before {
+  content: "\e920";
+}
+
+.icon-decision-making:before {
+  content: "\e921";
+}
+
+.icon-diagnosis:before {
+  content: "\e922";
+}
+
+.icon-document:before {
+  content: "\e923";
+}
+
+.icon-employee-of-the-month:before {
+  content: "\e924";
+}
+
+.icon-evaluation:before {
+  content: "\e925";
+}
+
+.icon-expert:before {
+  content: "\e926";
+}
+
+.icon-expert-1:before {
+  content: "\e937";
+}
+
+.icon-financial-consultant:before {
+  content: "\e938";
+}
+
+.icon-financial-profit:before {
+  content: "\e939";
+}
+
+.icon-global:before {
+  content: "\e93a";
+}
+
+.icon-goal:before {
+  content: "\e93b";
+}
+
+.icon-help:before {
+  content: "\e93c";
+}
+
+.icon-help-1:before {
+  content: "\e93d";
+}
+
+.icon-help-2:before {
+  content: "\e93e";
+}
+
+.icon-human-resources:before {
+  content: "\e93f";
+}
+
+.icon-idea:before {
+  content: "\e940";
+}
+
+.icon-idea-1:before {
+  content: "\e941";
+}
+
+.icon-ideas:before {
+  content: "\e942";
+}
+
+.icon-insurance-policy:before {
+  content: "\e943";
+}
+
+.icon-knowledge:before {
+  content: "\e944";
+}
+
+.icon-management:before {
+  content: "\e945";
+}
+
+.icon-star-outlined:before {
+  content: "\e935";
+}
+
+.icon-star:before {
+  content: "\e936";
+}
+
+.icon-circle-check:before {
+  content: "\e934";
+}
+
+.icon-clock:before {
+  content: "\e933";
+}
+
+.icon-chevron-left:before {
+  content: "\e92f";
+}
+
+.icon-chevron-right:before {
+  content: "\e930";
+}
+
+.icon-chevron-down:before {
+  content: "\e931";
+}
+
+.icon-chevron-up:before {
+  content: "\e932";
+}
+
+.icon-facebook-circle:before {
+  content: "\e927";
+}
+
+.icon-linkedin-circle:before {
+  content: "\e928";
+}
+
+.icon-twitter-circle:before {
+  content: "\e929";
+}
+
+.icon-youtube-circle:before {
+  content: "\e92a";
+}
+
+.icon-arrow-wide-top:before {
+  content: "\e92b";
+}
+
+.icon-arrow-left2:before {
+  content: "\e92c";
+}
+
+.icon-arrow-right2:before {
+  content: "\e92d";
+}
+
+.icon-play:before {
+  content: "\e92e";
+}
+
+.icon-cart:before {
+  content: "\e902";
+}
+
+.icon-email:before {
+  content: "\e903";
+}
+
+.icon-location:before {
+  content: "\e904";
+}
+
+.icon-nav:before {
+  content: "\e905";
+}
+
+.icon-phone:before {
+  content: "\e906";
+}
+
+.icon-search:before {
+  content: "\e907";
+}
