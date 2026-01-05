@@ -1,0 +1,6 @@
+openai
+pandas
+openpyxl
+flask
+requests
+azure
